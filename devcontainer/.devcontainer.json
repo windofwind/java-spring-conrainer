@@ -1,6 +1,6 @@
 {
   "name": "JAVA-spring",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
@@ -11,8 +11,9 @@
       "installOhMyZshConfig": "true"
     },
     "ghcr.io/devcontainers/features/java:1": {
-      "version": "17",
-      "installMaven": "true"
+      "installMaven": "true",
+      "mavenVersion": "3.8.6",
+      "installGradle": "false"
     }
   },
   // Use 'postCreateCommand' to run commands after the container is created.
