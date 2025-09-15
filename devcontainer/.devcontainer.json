@@ -1,24 +1,55 @@
 {
-  "name": "JAVA-spring",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-17",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "name": "Devcontainer test",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/devcontainer_test",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": "true",
-      "configureZshAsDefaultShell": "true",
-      "installOhMyZsh": "true",
-      "installOhMyZshConfig": "true"
+    "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
+      "plugins": "",
+      "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions",
+      "username": "vscode"
+    },
+    "github-cli": "latest"
+  },
+  "forwardPorts": [25432],
+  "postCreateCommand": "sh .devcontainer/startup.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "octref.vetur",
+        "Orta.vscode-jest",
+        "ritwickdey.LiveServer",
+        "bradlc.vscode-tailwindcss",
+        "mechatroner.rainbow-csv",
+        "vmware.vscode-boot-dev-pack",
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-lombok",
+        "vscjava.vscode-gradle",
+        "bierner.markdown-mermaid"
+      ],
+      "settings": {
+        "files.eol": "\n",
+        "editor.tabSize": 4,
+        "editor.renderWhitespace": "all",
+        "typescript.validate.enable": false,
+        "eslint.alwaysShowStatus": true,
+        "editor.formatOnSave": true,
+        "eslint.workingDirectories": [{ "mode": "auto" }],
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
+        },
+        "spring-boot.ls.java.vmargs": [
+          "-Xmx512M"
+        ],
+        "remote.localPortHost": "allInterfaces",
+        "git.detectSubmodulesLimit": 70,
+        "editor.tabCompletion": "on",
+        "java.format.settings.profile": "GoogleStyle"
+      }
     }
   },
-  // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "pnpm install && pnpm ts-patch install && pnpm build"
-  // "postStartCommand": "pnpm install && pnpm ts-patch install && pnpm build"
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root"
-  "hostRequirements": {
-    "cpus": 2,
-    "memory": "4gb",
-    "storage": "20gb"
-  }
+  "remoteUser": "vscode"
 }
