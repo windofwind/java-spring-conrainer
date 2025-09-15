@@ -1,13 +1,14 @@
 {
-  "name": "Devcontainer test",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "app",
+  "name": "java 17 test",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
   "workspaceFolder": "/workspaces/devcontainer_test",
   "features": {
-    "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
-      "plugins": "",
-      "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions",
-      "username": "vscode"
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "configureZshAsDefaultShell": "true",
+      "installOhMyZsh": "true",
+      "installOhMyZshConfig": "true"
     },
     "github-cli": "latest"
   },
