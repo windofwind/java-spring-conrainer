@@ -32,12 +32,19 @@
         "bierner.markdown-mermaid"
       ],
       "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh"
+          }
+        },
         "files.eol": "\n",
+        "files.autoSave": "afterDelay",
         "editor.tabSize": 4,
         "editor.renderWhitespace": "all",
+        "editor.formatOnSave": true,
         "typescript.validate.enable": false,
         "eslint.alwaysShowStatus": true,
-        "editor.formatOnSave": true,
         "eslint.workingDirectories": [{ "mode": "auto" }],
         "editor.codeActionsOnSave": {
           "source.fixAll.eslint": true
