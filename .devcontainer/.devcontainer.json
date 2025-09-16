@@ -1,6 +1,6 @@
 {
   "name": "java 17 test",
-  "image": "mcr.microsoft.com/devcontainers/java:17-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
   "workspaceFolder": "/workspaces/devcontainer_test",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
@@ -43,18 +43,18 @@
         "editor.tabSize": 4,
         "editor.renderWhitespace": "all",
         "editor.formatOnSave": true,
-        "typescript.validate.enable": false,
+        "editor.tabCompletion": "on",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
         "eslint.alwaysShowStatus": true,
         "eslint.workingDirectories": [{ "mode": "auto" }],
-        "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": true
-        },
         "spring-boot.ls.java.vmargs": [
           "-Xmx512M"
         ],
+        "typescript.validate.enable": false,
         "remote.localPortHost": "allInterfaces",
         "git.detectSubmodulesLimit": 70,
-        "editor.tabCompletion": "on",
         "java.format.settings.profile": "GoogleStyle"
       }
     }
