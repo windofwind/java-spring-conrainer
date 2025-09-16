@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "ms-vscode-remote.vscode-remote-extensionpack",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "octref.vetur",
+    "Orta.vscode-jest",
+    "ritwickdey.LiveServer",
+    "bradlc.vscode-tailwindcss",
+    "mechatroner.rainbow-csv",
+    "vmware.vscode-boot-dev-pack",
+    "vscjava.vscode-java-pack",
+    "vscjava.vscode-lombok",
+    "vscjava.vscode-gradle",
+    "bierner.markdown-mermaid",
+    "anthropic.claude-code",
+    "EditorConfig.EditorConfig"
+  ]
+}
