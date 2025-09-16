@@ -1,6 +1,6 @@
 {
   "name": "java 17 test",
-  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/java:17-bullseye",
   "workspaceFolder": "/workspaces/devcontainer_test",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},

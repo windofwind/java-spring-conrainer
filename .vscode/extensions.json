@@ -1,6 +1,15 @@
 {
   "recommendations": [
     "ms-vscode-remote.vscode-remote-extensionpack",
+    "github.vscode-pull-request-github",
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode",
+    "ms-vscode.live-server",
+    "nopeslide.vscode-drawio-plugin-mermaid",
+    "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
+    "bierner.markdown-mermaid",
+    "prisma.prisma",
+    "anthropic.claude-code",
     "dbaeumer.vscode-eslint",
     "eamodio.gitlens",
     "esbenp.prettier-vscode",
@@ -14,7 +23,6 @@
     "vscjava.vscode-lombok",
     "vscjava.vscode-gradle",
     "bierner.markdown-mermaid",
-    "anthropic.claude-code",
-    "EditorConfig.EditorConfig"
+    "codeium.codeium"
   ]
 }

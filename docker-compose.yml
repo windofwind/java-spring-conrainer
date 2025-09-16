@@ -1,16 +1,5 @@
-version: '3.8'
-
 services:
-  app:
-    container_name: devcontainer-test
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ../..:/workspaces:cached
-    command: sleep infinity
-    network_mode: host
-  db:
+  postgres:
     container_name: postgresdb
     image: postgres:latest
     restart: unless-stopped
@@ -21,6 +10,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
     network_mode: host
-    
+
 volumes:
   postgres-data:
