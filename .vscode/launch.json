@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-AcutionApplication<java-spring-conrainer>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "info.addline.acution.AcutionApplication",
+      "projectName": "java-spring-conrainer",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

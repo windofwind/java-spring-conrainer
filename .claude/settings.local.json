@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker exec:*)",
+      "Bash(./gradlew:*)",
+      "Bash(java:*)",
+      "Bash(sudo apt:*)",
+      "Bash(sudo apt install:*)",
+      "Bash(sudo update-alternatives:*)",
+      "Bash(export:*)",
+      "Bash(JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 ./gradlew bootRun)",
+      "Bash(curl:*)",
+      "Read(//usr/lib/jvm/**)",
+      "Bash(JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 ./gradlew build)",
+      "Bash(docker-compose up:*)",
+      "Bash(docker logs:*)",
+      "Bash(JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 timeout 30s ./gradlew bootRun)",
+      "Bash(timeout:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
