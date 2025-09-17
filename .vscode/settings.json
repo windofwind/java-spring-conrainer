@@ -17,6 +17,17 @@
     "comments": "#d39e9e"
   },
   "editor.fontFamily": "D2Coding",
+  "[markdown]": {
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
   "[java]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnType": true
@@ -27,5 +38,6 @@
   "[sql]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnType": true
-  }
+  },
+  "editor.accessibilitySupport": "off"
 }
