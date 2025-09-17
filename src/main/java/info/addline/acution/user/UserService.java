@@ -1,15 +1,14 @@
 package info.addline.acution.user;
 
 import info.addline.acution.user.dto.UserRegistrationDto;
+import info.addline.acution.user.dto.UserLoginDto;
 import info.addline.acution.user.dto.UserResponseDto;
-import info.addline.acution.user.dto.UserUpdateDto;
 import info.addline.acution.user.entity.Profile;
 import info.addline.acution.user.entity.User;
 import info.addline.acution.user.entity.UserAccount;
 import info.addline.acution.repository.ProfileRepository;
 import info.addline.acution.repository.UserAccountRepository;
 import info.addline.acution.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +40,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class UserService {
+public class UserService implements UserServiceInterface {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
@@ -54,7 +53,6 @@ public class UserService {
      * @param profileRepository 프로필 데이터 액세스 레포지토리
      * @param userAccountRepository 계정 연동 데이터 액세스 레포지토리
      */
-    @Autowired
     public UserService(UserRepository userRepository,
                       ProfileRepository profileRepository,
                       UserAccountRepository userAccountRepository) {
@@ -76,7 +74,7 @@ public class UserService {
         }
 
         User user = new User(primaryEmail);
-        user.setStatus(User.UserStatus.ACTIVE);
+        user.setStatus("ACTIVE");
 
         User savedUser = userRepository.save(user);
 
@@ -85,6 +83,59 @@ public class UserService {
         profileRepository.save(profile);
 
         return new UserResponseDto(savedUser);
+    }
+
+    /**
+     * 새로운 사용자를 등록합니다.
+     *
+     * @param registrationDto 회원가입 요청 정보
+     * @return 등록된 사용자 정보
+     * @throws RuntimeException 이메일이 이미 존재하거나 유효성 검사 실패 시
+     */
+    public UserResponseDto registerUser(UserRegistrationDto registrationDto) {
+        if (userRepository.existsByPrimaryEmail(registrationDto.getEmail())) {
+            throw new RuntimeException("이미 존재하는 이메일입니다: " + registrationDto.getEmail());
+        }
+
+        User user = new User(registrationDto.getEmail());
+        user.setStatus("ACTIVE");
+        // 비밀번호 암호화는 시큐리티 구현 때 추가
+        // user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+
+        User savedUser = userRepository.save(user);
+
+        // 기본 프로필 생성
+        Profile profile = new Profile(savedUser);
+        if (registrationDto.getFullName() != null) {
+            profile.setDisplayName(registrationDto.getFullName());
+            profile.setFullName(registrationDto.getFullName());
+        }
+        profileRepository.save(profile);
+
+        return new UserResponseDto(savedUser);
+    }
+
+    /**
+     * 사용자 로그인을 처리합니다.
+     *
+     * @param loginDto 로그인 요청 정보 (이메일, 비밀번호)
+     * @return 인증된 사용자 정보
+     * @throws RuntimeException 인증 실패 시
+     */
+    public UserResponseDto loginUser(UserLoginDto loginDto) {
+        User user = userRepository.findByPrimaryEmail(loginDto.getEmail())
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다: " + loginDto.getEmail()));
+
+        // 비밀번호 검증은 시큐리티 구현 때 추가
+        // if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+        //     throw new RuntimeException("비밀번호가 일치하지 않습니다");
+        // }
+
+        if (!"ACTIVE".equals(user.getStatus())) {
+            throw new RuntimeException("비활성 계정입니다");
+        }
+
+        return new UserResponseDto(user);
     }
 
     /**
@@ -280,7 +331,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다: " + id));
 
-        user.setStatus(User.UserStatus.DELETED);
+        user.setStatus("DELETED");
         userRepository.save(user);
     }
 
@@ -305,7 +356,7 @@ public class UserService {
      * @return 업데이트된 사용자 정보
      * @throws RuntimeException 사용자를 찾을 수 없을 때
      */
-    public UserResponseDto updateUserStatus(String id, User.UserStatus status) {
+    public UserResponseDto updateUserStatus(String id, String status) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다: " + id));
 

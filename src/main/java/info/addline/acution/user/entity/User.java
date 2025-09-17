@@ -1,18 +1,23 @@
 package info.addline.acution.user.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import cool.graph.cuid.Cuid;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import cool.graph.cuid.Cuid;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * 통합 사용자 정보를 나타내는 JPA 엔티티 클래스입니다.
@@ -64,10 +69,10 @@ public class User {
     /**
      * 사용자의 현재 상태입니다.
      * 기본값은 ACTIVE이며, 논리 삭제 시 DELETED로 변경됩니다.
+     * 가능한 값: ACTIVE, INACTIVE, SUSPENDED, DELETED
      */
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserStatus status = UserStatus.ACTIVE;
+    private String status = "ACTIVE";
 
     /**
      * 연결된 소셜 계정들입니다.
@@ -99,19 +104,6 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    /**
-     * 사용자 상태를 나타내는 열거형입니다.
-     *
-     * <ul>
-     *   <li>ACTIVE: 활성 사용자 (정상 사용 가능)</li>
-     *   <li>INACTIVE: 비활성 사용자 (일시적 사용 중단)</li>
-     *   <li>SUSPENDED: 정지된 사용자 (관리자에 의한 정지)</li>
-     *   <li>DELETED: 삭제된 사용자 (논리 삭제)</li>
-     * </ul>
-     */
-    public enum UserStatus {
-        ACTIVE, INACTIVE, SUSPENDED, DELETED
-    }
 
     /**
      * 기본 생성자입니다.
@@ -226,7 +218,7 @@ public class User {
      *
      * @return 현재 사용자 상태
      */
-    public UserStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
@@ -235,7 +227,7 @@ public class User {
      *
      * @param status 설정할 사용자 상태
      */
-    public void setStatus(UserStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

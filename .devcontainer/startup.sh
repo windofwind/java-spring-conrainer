@@ -34,4 +34,4 @@ sudo chsh -s "$ZSH_PATH"
 source $HOME/.zshrc
 
 # pnpm setup
-# pnpm add @anthropic-ai/claude-code@latest @google/gemini-cli -g
+# pnpm add @anthropic-ai/claude-code@latest @google/gemini-cli@latest -g

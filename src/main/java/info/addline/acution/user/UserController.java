@@ -1,24 +1,30 @@
 package info.addline.acution.user;
 
-import info.addline.acution.user.dto.UserLoginDto;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import info.addline.acution.user.dto.UserRegistrationDto;
+import info.addline.acution.user.dto.UserLoginDto;
 import info.addline.acution.user.dto.UserResponseDto;
-import info.addline.acution.user.dto.UserUpdateDto;
-import info.addline.acution.user.entity.User;
+import jakarta.validation.Valid;
 import info.addline.acution.user.entity.UserAccount;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * 통합 사용자 관리 REST API 컨트롤러입니다.
@@ -43,47 +49,68 @@ import java.util.Optional;
  * @see UserResponseDto
  */
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 @Tag(name = "User Management", description = "사용자 관리 API")
 public class UserController {
 
     /**
      * 사용자 비즈니스 로직을 처리하는 서비스 인스턴스입니다.
      */
-    private final UserService userService;
+    private final UserServiceInterface userService;
 
     /**
      * UserController 생성자입니다.
      *
      * @param userService 사용자 관련 비즈니스 로직을 처리하는 서비스
      */
-    @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserServiceInterface userService) {
         this.userService = userService;
     }
 
     /**
-     * 새로운 사용자를 생성합니다.
+     * 새로운 사용자를 등록합니다.
      *
-     * <p>주 이메일로 새로운 통합 사용자를 생성합니다.</p>
+     * <p>이메일과 비밀번호로 새로운 사용자를 생성합니다.</p>
      *
-     * @param primaryEmail 주 이메일 주소
+     * @param registrationDto 회원가입 요청 정보
      * @return 생성된 사용자 정보를 담은 ResponseEntity
      * @throws RuntimeException 이메일이 이미 존재할 때
      */
-    @PostMapping("/create")
-    @Operation(summary = "사용자 생성", description = "주 이메일로 새로운 사용자를 생성합니다")
+    @PostMapping("/register")
+    @Operation(summary = "사용자 회원가입", description = "이메일과 비밀번호로 새로운 사용자를 생성합니다")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "사용자 생성 성공"),
+            @ApiResponse(responseCode = "201", description = "회원가입 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 입력 데이터"),
             @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일")
     })
-    public ResponseEntity<UserResponseDto> createUser(@RequestParam String primaryEmail) {
+    public ResponseEntity<UserResponseDto> registerUser(@Valid @RequestBody UserRegistrationDto registrationDto) {
         try {
-            UserResponseDto user = userService.createUser(primaryEmail);
+            UserResponseDto user = userService.registerUser(registrationDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(user);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+    /**
+     * 사용자 로그인을 처리합니다.
+     *
+     * @param loginDto 로그인 요청 정보 (이메일, 비밀번호)
+     * @return 로그인된 사용자 정보
+     */
+    @PostMapping("/login")
+    @Operation(summary = "사용자 로그인", description = "이메일과 비밀번호로 사용자 로그인을 처리합니다")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 입력 데이터"),
+            @ApiResponse(responseCode = "401", description = "인증 실패")
+    })
+    public ResponseEntity<UserResponseDto> loginUser(@Valid @RequestBody UserLoginDto loginDto) {
+        try {
+            UserResponseDto user = userService.loginUser(loginDto);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
@@ -209,9 +236,9 @@ public class UserController {
     @PutMapping("/{id}/primary-email")
     @Operation(summary = "주 이메일 변경", description = "사용자의 주 이메일을 변경합니다")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "변경 성공"),
-            @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음"),
-            @ApiResponse(responseCode = "409", description = "이메일 중복")
+            @ApiResponse(responseCode = "200", description = "변경 성공", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "409", description = "이메일 중복", content = @Content(mediaType = "application/json"))
     })
     public ResponseEntity<UserResponseDto> updatePrimaryEmail(
             @Parameter(description = "사용자 CUID", required = true) @PathVariable String id,

@@ -10,6 +10,7 @@
       "installOhMyZsh": "true",
       "installOhMyZshConfig": "true"
     },
+    "ghcr.io/devcontainers/features/node:1": {},
     "github-cli": "latest"
   },
   "forwardPorts": [25432],
@@ -49,9 +50,7 @@
         },
         "eslint.alwaysShowStatus": true,
         "eslint.workingDirectories": [{ "mode": "auto" }],
-        "spring-boot.ls.java.vmargs": [
-          "-Xmx512M"
-        ],
+        "spring-boot.ls.java.vmargs": ["-Xmx512M"],
         "typescript.validate.enable": false,
         "remote.localPortHost": "allInterfaces",
         "git.detectSubmodulesLimit": 70,

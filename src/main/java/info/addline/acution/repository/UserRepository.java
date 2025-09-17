@@ -1,15 +1,16 @@
 package info.addline.acution.repository;
 
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import info.addline.acution.user.entity.User;
-
-import java.util.Optional;
-import java.util.List;
+import info.addline.acution.user.entity.UserAccount;
 
 /**
  * 사용자 데이터 접근을 위한 JPA 리포지토리 인터페이스입니다.
@@ -77,7 +78,7 @@ public interface UserRepository extends JpaRepository<User, String> {
      * @return 해당 상태의 사용자 목록
      */
     @Query("SELECT u FROM User u WHERE u.status = :status")
-    List<User> findByStatus(@Param("status") User.UserStatus status);
+    List<User> findByStatus(@Param("status") String status);
 
     /**
      * 이메일에서 키워드를 포함하는 사용자들을 검색합니다.

@@ -61,7 +61,7 @@ public class UserResponseDto {
      * ACTIVE, INACTIVE, DELETED 중 하나의 값을 가집니다.
      */
     @Schema(description = "사용자 상태", example = "ACTIVE")
-    private User.UserStatus status;
+    private String status;
 
     /**
      * 사용자 계정이 생성된 시간입니다.
@@ -182,7 +182,7 @@ public class UserResponseDto {
      *
      * @return 사용자의 현재 상태
      */
-    public User.UserStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
@@ -191,7 +191,7 @@ public class UserResponseDto {
      *
      * @param status 설정할 사용자 상태
      */
-    public void setStatus(User.UserStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
