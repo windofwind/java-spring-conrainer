@@ -99,4 +99,28 @@ public interface ProfileRepository extends JpaRepository<Profile, String> {
      */
     @Query("SELECT p FROM Profile p WHERE p.profileImageUrl IS NOT NULL AND p.profileImageUrl != ''")
     List<Profile> findProfilesWithImage();
+
+    /**
+     * 삭제된 프로필들을 조회합니다.
+     *
+     * @return 삭제된 프로필 목록
+     */
+    @Query("SELECT p FROM Profile p WHERE p.deletedAt IS NOT NULL")
+    List<Profile> findAllDeleted();
+
+    /**
+     * 삭제된 프로필을 포함하여 모든 프로필을 조회합니다.
+     *
+     * @return 모든 프로필 목록 (삭제된 것도 포함)
+     */
+    @Query("SELECT p FROM Profile p")
+    List<Profile> findAllIncludingDeleted();
+
+    /**
+     * ID로 프로필을 복원합니다.
+     *
+     * @param id 복원할 프로필 ID
+     */
+    @Query("UPDATE Profile p SET p.deletedAt = NULL WHERE p.id = :id")
+    List<Profile> restoreById(@Param("id") String id);
 }

@@ -18,6 +18,12 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 통합 사용자 정보를 나타내는 JPA 엔티티 클래스입니다.
@@ -37,10 +43,14 @@ import jakarta.validation.constraints.NotBlank;
  * @author Acution Development Team
  * @version 1.0
  * @since 1.0
- * @see UserStatus
  */
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User {
 
     /**
@@ -49,7 +59,8 @@ public class User {
      */
     @Id
     @Column(name = "id", updatable = false, nullable = false, length = 25)
-    private String id;
+    @Builder.Default
+    private String id = Cuid.createCuid();
 
     /**
      * 주 이메일 주소입니다.
@@ -64,6 +75,7 @@ public class User {
      * 이메일 인증 여부입니다.
      */
     @Column(name = "email_verified", nullable = false)
+    @Builder.Default
     private Boolean emailVerified = false;
 
     /**
@@ -72,6 +84,7 @@ public class User {
      * 가능한 값: ACTIVE, INACTIVE, SUSPENDED, DELETED
      */
     @Column(nullable = false)
+    @Builder.Default
     private String status = "ACTIVE";
 
     /**
@@ -79,6 +92,7 @@ public class User {
      * 하나의 사용자가 여러 소셜 계정을 연동할 수 있습니다.
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<UserAccount> accounts = new ArrayList<>();
 
     /**
@@ -104,168 +118,8 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-
-    /**
-     * 기본 생성자입니다.
-     * JPA에서 요구하는 기본 생성자입니다.
-     */
-    public User() {
-        this.id = Cuid.createCuid();
-    }
-
-    /**
-     * 주 이메일로 사용자를 생성하는 생성자입니다.
-     *
-     * @param primaryEmail 주 이메일 주소
-     */
     public User(String primaryEmail) {
-        this();
+        this.id = Cuid.createCuid();
         this.primaryEmail = primaryEmail;
-    }
-
-    /**
-     * 사용자 ID를 반환합니다.
-     *
-     * @return 사용자의 고유 식별자(CUID)
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * 사용자 ID를 설정합니다.
-     *
-     * @param id 설정할 사용자 CUID
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * 주 이메일 주소를 반환합니다.
-     *
-     * @return 주 이메일 주소
-     */
-    public String getPrimaryEmail() {
-        return primaryEmail;
-    }
-
-    /**
-     * 주 이메일 주소를 설정합니다.
-     *
-     * @param primaryEmail 설정할 주 이메일 주소
-     */
-    public void setPrimaryEmail(String primaryEmail) {
-        this.primaryEmail = primaryEmail;
-    }
-
-    /**
-     * 이메일 인증 상태를 반환합니다.
-     *
-     * @return 이메일 인증 여부
-     */
-    public Boolean getEmailVerified() {
-        return emailVerified;
-    }
-
-    /**
-     * 이메일 인증 상태를 설정합니다.
-     *
-     * @param emailVerified 설정할 이메일 인증 상태
-     */
-    public void setEmailVerified(Boolean emailVerified) {
-        this.emailVerified = emailVerified;
-    }
-
-    /**
-     * 연결된 계정 목록을 반환합니다.
-     *
-     * @return 연결된 소셜 계정 목록
-     */
-    public List<UserAccount> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * 연결된 계정 목록을 설정합니다.
-     *
-     * @param accounts 설정할 계정 목록
-     */
-    public void setAccounts(List<UserAccount> accounts) {
-        this.accounts = accounts;
-    }
-
-    /**
-     * 프로필 정보를 반환합니다.
-     *
-     * @return 사용자 프로필
-     */
-    public Profile getProfile() {
-        return profile;
-    }
-
-    /**
-     * 프로필 정보를 설정합니다.
-     *
-     * @param profile 설정할 프로필
-     */
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
-    /**
-     * 사용자 상태를 반환합니다.
-     *
-     * @return 현재 사용자 상태
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * 사용자 상태를 설정합니다.
-     *
-     * @param status 설정할 사용자 상태
-     */
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    /**
-     * 계정 생성 시간을 반환합니다.
-     *
-     * @return 계정 생성 시간
-     */
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    /**
-     * 계정 생성 시간을 설정합니다.
-     * 일반적으로 Hibernate에 의해 자동으로 설정되므로 직접 호출할 필요가 없습니다.
-     *
-     * @param createdAt 설정할 생성 시간
-     */
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    /**
-     * 최종 수정 시간을 반환합니다.
-     *
-     * @return 최종 수정 시간
-     */
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /**
-     * 최종 수정 시간을 설정합니다.
-     * 일반적으로 Hibernate에 의해 자동으로 업데이트되므로 직접 호출할 필요가 없습니다.
-     *
-     * @param updatedAt 설정할 수정 시간
-     */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

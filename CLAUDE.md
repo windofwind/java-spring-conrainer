@@ -149,6 +149,7 @@ public class User {
 - Extend `JpaRepository<Entity, ID>` for basic CRUD operations
 - Use custom query methods with naming conventions
 - Use `@Query` annotation for complex queries
+- **Do not use enums in repository queries**: Use String values instead of enum constants for database operations
 - Example repository:
 ```java
 @Repository
@@ -158,6 +159,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.email = ?1")
     Optional<User> findByEmail(String email);
+
+    // Use String values instead of enum in queries
+    @Query("SELECT u FROM User u WHERE u.status = 'ACTIVE'")
+    List<User> findActiveUsers();
+
+    // Custom method using String parameter instead of enum
+    List<User> findByStatus(String status);
 }
 ```
 
@@ -177,6 +185,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
    - User login/authentication (로그인) - UserRepository methods
    - User withdrawal/deletion (회원탈퇴) - JPA delete operations
    - Profile CRUD operations (프로필 추가/수정/삭제) - Profile entity with relationships
+9. **Database Enum Handling**:
+   - Do not use Java enums directly in repository/database operations
+   - Use String values in @Query annotations and method parameters
+   - Convert between enum and String in service layer when needed
 
 ### Dependencies (Already Added)
 Current `build.gradle` includes:

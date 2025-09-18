@@ -4,7 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 import cool.graph.cuid.Cuid;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
@@ -31,6 +38,12 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "profiles")
+@Where(clause = "deleted_at IS NULL")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Profile {
 
     /**
@@ -39,7 +52,8 @@ public class Profile {
      */
     @Id
     @Column(name = "id", updatable = false, nullable = false, length = 25)
-    private String id;
+    @Builder.Default
+    private String id = Cuid.createCuid();
 
     /**
      * 프로필이 속한 사용자입니다.
@@ -136,281 +150,46 @@ public class Profile {
     private LocalDateTime updatedAt;
 
     /**
+     * 프로필 삭제 시간입니다.
+     * 소프트 삭제 시 타임스탬프를 기록하며, null이면 삭제되지 않은 상태입니다.
+     */
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    /**
      * 성별을 나타내는 열거형입니다.
      */
     public enum Gender {
         MALE, FEMALE, OTHER, PREFER_NOT_TO_SAY
     }
 
-    /**
-     * 기본 생성자입니다.
-     * JPA에서 요구하는 기본 생성자입니다.
-     */
-    public Profile() {
-        this.id = Cuid.createCuid();
-    }
-
-    /**
-     * 사용자와 함께 프로필을 생성하는 생성자입니다.
-     *
-     * @param user 프로필이 속할 사용자
-     */
     public Profile(User user) {
-        this();
-        this.user = user;
-    }
-
-    // Getters and Setters
-
-    /**
-     * 프로필 ID를 반환합니다.
-     *
-     * @return 프로필의 고유 식별자(CUID)
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * 프로필 ID를 설정합니다.
-     *
-     * @param id 설정할 프로필 CUID
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * 프로필이 속한 사용자를 반환합니다.
-     *
-     * @return 프로필 소유자
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * 프로필이 속한 사용자를 설정합니다.
-     *
-     * @param user 설정할 사용자
-     */
-    public void setUser(User user) {
+        this.id = Cuid.createCuid();
         this.user = user;
     }
 
     /**
-     * 표시 이름을 반환합니다.
-     *
-     * @return 사용자의 표시 이름(닉네임)
+     * 프로필을 소프트 삭제합니다.
+     * deletedAt 필드를 현재 시간으로 설정합니다.
      */
-    public String getDisplayName() {
-        return displayName;
+    public void softDelete() {
+        this.deletedAt = LocalDateTime.now();
     }
 
     /**
-     * 표시 이름을 설정합니다.
-     *
-     * @param displayName 설정할 표시 이름
+     * 소프트 삭제를 복원합니다.
+     * deletedAt 필드를 null로 설정합니다.
      */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void restore() {
+        this.deletedAt = null;
     }
 
     /**
-     * 실제 이름을 반환합니다.
+     * 프로필이 삭제되었는지 확인합니다.
      *
-     * @return 사용자의 실제 이름
+     * @return 삭제되었으면 true, 그렇지 않으면 false
      */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
-     * 실제 이름을 설정합니다.
-     *
-     * @param fullName 설정할 실제 이름
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    /**
-     * 생년월일을 반환합니다.
-     *
-     * @return 사용자의 생년월일
-     */
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    /**
-     * 생년월일을 설정합니다.
-     *
-     * @param birthDate 설정할 생년월일
-     */
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    /**
-     * 성별을 반환합니다.
-     *
-     * @return 사용자의 성별
-     */
-    public Gender getGender() {
-        return gender;
-    }
-
-    /**
-     * 성별을 설정합니다.
-     *
-     * @param gender 설정할 성별
-     */
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    /**
-     * 전화번호를 반환합니다.
-     *
-     * @return 사용자의 전화번호
-     */
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    /**
-     * 전화번호를 설정합니다.
-     *
-     * @param phoneNumber 설정할 전화번호
-     */
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    /**
-     * 주소를 반환합니다.
-     *
-     * @return 사용자의 주소
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * 주소를 설정합니다.
-     *
-     * @param address 설정할 주소
-     */
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    /**
-     * 프로필 이미지 URL을 반환합니다.
-     *
-     * @return 프로필 이미지 URL
-     */
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    /**
-     * 프로필 이미지 URL을 설정합니다.
-     *
-     * @param profileImageUrl 설정할 프로필 이미지 URL
-     */
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    /**
-     * 자기소개를 반환합니다.
-     *
-     * @return 사용자의 자기소개
-     */
-    public String getBio() {
-        return bio;
-    }
-
-    /**
-     * 자기소개를 설정합니다.
-     *
-     * @param bio 설정할 자기소개
-     */
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    /**
-     * 웹사이트 URL을 반환합니다.
-     *
-     * @return 사용자의 웹사이트 URL
-     */
-    public String getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    /**
-     * 웹사이트 URL을 설정합니다.
-     *
-     * @param websiteUrl 설정할 웹사이트 URL
-     */
-    public void setWebsiteUrl(String websiteUrl) {
-        this.websiteUrl = websiteUrl;
-    }
-
-    /**
-     * 위치를 반환합니다.
-     *
-     * @return 사용자의 위치
-     */
-    public String getLocation() {
-        return location;
-    }
-
-    /**
-     * 위치를 설정합니다.
-     *
-     * @param location 설정할 위치
-     */
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    /**
-     * 생성 시간을 반환합니다.
-     *
-     * @return 프로필 생성 시간
-     */
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    /**
-     * 생성 시간을 설정합니다.
-     *
-     * @param createdAt 설정할 생성 시간
-     */
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    /**
-     * 최종 수정 시간을 반환합니다.
-     *
-     * @return 프로필 최종 수정 시간
-     */
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /**
-     * 최종 수정 시간을 설정합니다.
-     *
-     * @param updatedAt 설정할 수정 시간
-     */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public boolean isDeleted() {
+        return this.deletedAt != null;
     }
 }

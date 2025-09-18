@@ -28,7 +28,7 @@ public class SampleController {
     @PostMapping("/process")
     public ResponseEntity<String> processSampleData(@RequestBody SampleData data) {
         sampleService.processSample(data);
-        String responseMessage = "Data for '" + data.name() + "' processed successfully.";
+        String responseMessage = "Data for '" + data.getName() + "' processed successfully.";
         return ResponseEntity.ok(responseMessage);
     }
 }

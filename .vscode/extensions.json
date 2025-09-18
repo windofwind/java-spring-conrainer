@@ -23,6 +23,7 @@
     "vscjava.vscode-lombok",
     "vscjava.vscode-gradle",
     "bierner.markdown-mermaid",
-    "codeium.codeium"
+    "codeium.codeium",
+    "kilocode.kilo-code"
   ]
 }

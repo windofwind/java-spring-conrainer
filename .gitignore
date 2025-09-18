@@ -37,3 +37,6 @@ out/
 !.vscode/
 CLAUDE.md
 상담.md
+
+### node module ###
+node_modules

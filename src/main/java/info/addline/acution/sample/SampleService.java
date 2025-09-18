@@ -12,8 +12,8 @@ public class SampleService {
      */
     public void processSample(SampleData data) {
         System.out.println("\n--- [SampleService] Processing Data ---");
-        System.out.println("Received Name: " + data.name());
-        System.out.println("Received Email: " + data.email());
+        System.out.println("Received Name: " + data.getName());
+        System.out.println("Received Email: " + data.getEmail());
         System.out.println("--- End of Processing ---\\n");
     }
 }

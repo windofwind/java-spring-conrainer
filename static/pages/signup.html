@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 text-gray-900 font-sans">
+    <div class="max-w-md mx-auto my-10 p-6 bg-white rounded-lg shadow-md">
+      <h1 class="text-center text-2xl font-bold mb-6">회원가입</h1>
+      <form id="signupForm">
+        <div class="mb-4">
+          <label for="username" class="block mb-2 font-semibold">사용자명</label>
+          <input type="text" id="username" name="username" required class="w-full px-3 py-2 border border-gray-300 rounded-md box-border h-10" />
+        </div>
+        <div class="mb-4">
+          <label for="email" class="block mb-2 font-semibold">이메일</label>
+          <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md box-border h-10" />
+        </div>
+        <div class="mb-4">
+          <label for="password" class="block mb-2 font-semibold">비밀번호</label>
+          <input type="password" id="password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-md box-border h-10" />
+        </div>
+        <div class="mb-4">
+          <label for="confirmPassword" class="block mb-2 font-semibold">비밀번호 확인</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-md box-border h-10" />
+        </div>
+        <div class="mb-4">
+          <label for="fullName" class="block mb-2 font-semibold">전체 이름</label>
+          <input type="text" id="fullName" name="fullName" class="w-full px-3 py-2 border border-gray-300 rounded-md box-border h-10" />
+        </div>
+        <div class="mb-4">
+          <label for="phoneNumber" class="block mb-2 font-semibold">전화번호</label>
+          <input type="tel" id="phoneNumber" name="phoneNumber" class="w-full px-3 py-2 border border-gray-300 rounded-md box-border h-10" />
+        </div>
+        <button type="submit" class="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 cursor-pointer text-lg">회원가입</button>
+      </form>
+      <div class="text-center mt-4">
+        <a href="login.html" class="text-blue-500 no-underline hover:underline">로그인</a>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zod@3.22.4/lib/index.umd.js"></script>
+    <script src="../js/validation/signupValidation.js"></script>
+    <script src="../js/signup.js"></script>
+  </body>
+</html>

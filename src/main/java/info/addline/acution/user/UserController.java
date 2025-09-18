@@ -56,14 +56,14 @@ public class UserController {
     /**
      * 사용자 비즈니스 로직을 처리하는 서비스 인스턴스입니다.
      */
-    private final UserServiceInterface userService;
+    private final UserService userService;
 
     /**
      * UserController 생성자입니다.
      *
      * @param userService 사용자 관련 비즈니스 로직을 처리하는 서비스
      */
-    public UserController(UserServiceInterface userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 

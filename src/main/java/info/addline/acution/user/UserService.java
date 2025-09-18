@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class UserService implements UserServiceInterface {
+public class UserService {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
